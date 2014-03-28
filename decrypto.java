@@ -1,11 +1,10 @@
-package decrypto;
-
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import java.awt.Container;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
@@ -14,8 +13,20 @@ import java.awt.event.ActionListener;
 import java.awt.ComponentOrientation;
 
 public class decrypto extends JFrame{
+
+	// Create text fields
+	private JTextField input = new JTextField(95);
+	private JTextField output = new JTextField(95);
+	private JTextField textArray [] = new JTextField[26];
+
 	public decrypto(){
+
 		String s;
+
+		// Style text fields:
+		input.setFont(new Font("Monospaced", Font.PLAIN, 12));
+		output.setFont(new Font("Monospaced", Font.PLAIN, 12));
+		output.setEditable(false);
 
 		// Initialize handlers:
 		CharHandler charHandler = new CharHandler();
@@ -27,11 +38,8 @@ public class decrypto extends JFrame{
 		JPanel middle = new JPanel(new GridLayout(2,13, 0, 20));
 		JPanel lower = new JPanel();
 
-		// Create text fields, labels, text fields:
-		JTextField input = new JTextField(60);
-		JTextField output = new JTextField(60);
+		// Create text labels:
 		JLabel labelArray [] = new JLabel[26];
-		JTextField textArray [] = new JTextField[26];
 
 		// Assign handler to input text field:
 		input.addActionListener(textHandler);
@@ -69,6 +77,55 @@ public class decrypto extends JFrame{
 		add(lower, BorderLayout.SOUTH);
 	}
 
+	// Handle input text field:
+	class TextHandler implements ActionListener{
+		public void actionPerformed(ActionEvent e){
+			String s = input.getText();
+			String s2 = "";
+			int len = s.length();
+			for(int i=0; i<len; i++){
+				s2 += '-';
+			}
+			output.setText(s2);
+		}
+	}
+
+	// Handle input char fields:
+	class CharHandler implements ActionListener{
+		public void actionPerformed(ActionEvent e){
+			// Get text from text in/out-put text fields:
+			String in = input.getText();
+			String out = output.getText();
+			int len = in.length();
+			char c = ' ';
+
+			// Create two arrays for in/out-put strings:
+			char inarr []= new char[len];
+			char outarr[] = new char[len];
+
+			// Copy two strings to arrays:
+			for(int i=0; i<len; i++){
+				inarr[i] = in.charAt(i);
+				outarr[i] = out.charAt(i);
+			}
+
+			// Modify output:
+			for(int i=0; i<len; i++){
+				try{
+					c = textArray[i].getText().charAt(0);
+				}catch(Exception ex){
+					outarr[i] = '-';
+					continue;
+				}
+				outarr[i] = c;
+			}
+
+			// Set output to decrypted string:
+			String result = new String(outarr);
+			output.setText(result);
+		}
+	}
+
 	public static void main(String [] args){
 		JFrame f = new decrypto();
 		f.setTitle("Decrypto");
@@ -79,17 +136,7 @@ public class decrypto extends JFrame{
 	}
 }
 
-// Handle input text field:
-class TextHandler implements ActionListener{
-	public void actionPerformed(ActionEvent e){
-		System.out.println("char field");
-	}
-}
 
-// Handle input char fields:
-class CharHandler implements ActionListener{
-	public void actionPerformed(ActionEvent e){
-		System.out.println("input");
-	}
-}
+
+
 
