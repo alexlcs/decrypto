@@ -111,13 +111,16 @@ public class decrypto extends JFrame{
 
 			// Modify output:
 			for(int i=0; i<len; i++){
-				try{
-					c = textArray[i].getText().charAt(0);
-				}catch(Exception ex){
-					outarr[i] = '-';
-					continue;
+				for(int j=0; j<26; j++){
+					if(inarr[i] == Character.toString((char)(j+97)).charAt(0)){
+						try{
+							outarr[i] = textArray[j].getText().charAt(0);
+						}catch(Exception ex){
+							outarr[i] = '-';
+							continue;
+						}
+					}
 				}
-				outarr[i] = c;
 			}
 
 			// Set output to decrypted string:
